@@ -1,0 +1,12 @@
+[Unit]
+Description=Flowdrive Api
+
+[Service]
+Type=simple
+WorkingDirectory=<absolute path to repository root>
+EnvironmentFile=<absolute path to env file>
+ExecStart=gunicorn -c gunicorn_config.py
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

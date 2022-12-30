@@ -1,0 +1,295 @@
+_type: export
+__export_format: 4
+__export_date: 2022-12-30T14:14:04.621Z
+__export_source: insomnia.desktop.app:v2022.6.0
+resources:
+  - _id: req_b9fd5c8227ad4973b09f235f8a0c67b1
+    parentId: wrk_563cbfdcc2374267987b74a6fe11697a
+    modified: 1672402873357
+    created: 1672402764059
+    url: "{{ _.base }}/auth/confirm"
+    name: confirm_email
+    description: ""
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"email": "mail@wantguns.dev"
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+    authentication: {}
+    metaSortKey: -1672402764059
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: wrk_563cbfdcc2374267987b74a6fe11697a
+    parentId: null
+    modified: 1672062212087
+    created: 1672062201629
+    name: Flowdrive Auth
+    description: ""
+    scope: collection
+    _type: workspace
+  - _id: req_535dfd27b3bb42e59cccd25ea11368f2
+    parentId: wrk_563cbfdcc2374267987b74a6fe11697a
+    modified: 1672402599613
+    created: 1672401868854
+    url: "{{ _.base }}/auth/forgot_password"
+    name: forgot_password
+    description: ""
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"email": "mail@wantguns.dev"
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+    authentication: {}
+    metaSortKey: -1672401868854
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_4d3ca35421fa4735ae805bce60cd47ee
+    parentId: wrk_563cbfdcc2374267987b74a6fe11697a
+    modified: 1672404848311
+    created: 1672402012171
+    url: "{{ _.base }}/auth/reset_password"
+    name: reset_password
+    description: ""
+    method: POST
+    body:
+      mimeType: application/json
+      text: >-
+        {
+        	"token": "Im1haWxAd2FudGd1bnMuZGV2Ig.Y67WqQ.Pdbd12PmCc4ztCAe-UDrCJLFn7M",
+        	"password": "lmao"
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+        id: pair_755c5085522142808fb2e4ef4195aece
+    authentication: {}
+    metaSortKey: -1672376810966.5
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_dedadc5bed3d4c33918e2c7a842a18d9
+    parentId: wrk_563cbfdcc2374267987b74a6fe11697a
+    modified: 1672352262632
+    created: 1672351753079
+    url: "{{ _.base }}/auth/sts"
+    name: sts
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers: []
+    authentication:
+      type: bearer
+      token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NzI0MzY0MjMsImlhdCI6MTY3MjM1MDAxOCwic3ViIjoxfQ.nb_mXFJn1hd_a8n0SqirlSHqRhKOdGO8lIYr4qzZ7I
+    metaSortKey: -1672351753079
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_5ded20f4eb8f4610bb4d7c4877f890d8
+    parentId: wrk_563cbfdcc2374267987b74a6fe11697a
+    modified: 1672409608271
+    created: 1672352272172
+    url: "{{ _.base }}/auth/refresh_token"
+    name: jwt_refresh
+    description: ""
+    method: GET
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"long_living": true
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+        id: pair_a2da4740e6d24ce6aa7382749eeac7b5
+    authentication:
+      type: bearer
+      token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MDM5NDQ4NjcsImlhdCI6MTY3MjQwODg2Nywic3ViIjoxfQ.acT_R6s6VUtd2PRAEXzW6p6_iysYD50GYEIGF7SpXIM
+    metaSortKey: -1672208344137
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_5b42db17c0c5468a89afc2af0d6e6d29
+    parentId: wrk_563cbfdcc2374267987b74a6fe11697a
+    modified: 1672408877527
+    created: 1672064935195
+    url: "{{ _.base }}/auth/logout"
+    name: logout
+    description: ""
+    method: POST
+    body:
+      mimeType: application/json
+      text: >-
+        {
+        	"auth_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NzIxNTAyNjksImlhdCI6MTY3MjA2Mzg2NCwic3ViIjozfQ.Dl2TyNH4dMsViG4n_DRvbf4X7TLb6XVdPkQCsFBAJsc"
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+    authentication:
+      type: bearer
+      token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NzIzNTM0NDAsImlhdCI6MTY3MjI2NzAzNSwic3ViIjoxfQ.oQ2R5NtzwgT6MAzWSO3qVD3Mj8M0qH-iiwrMbbU7K1s
+    metaSortKey: -1672064935195
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_50eeab194edc4080bae12772d0a6b8e4
+    parentId: wrk_563cbfdcc2374267987b74a6fe11697a
+    modified: 1672355134383
+    created: 1672062953397
+    url: "{{ _.base }}/user/status"
+    name: status
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers: []
+    authentication:
+      type: bearer
+      token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NzIzNTUzOTIsImlhdCI6MTY3MjM1NTAyNywic3ViIjoxfQ.F2EpNKDL3zzO4McOECAyVYRkh-L6hZgVYAofvhSQP2A
+    metaSortKey: -1672062953397
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_1542c44308dd447187a064da17e02f80
+    parentId: wrk_563cbfdcc2374267987b74a6fe11697a
+    modified: 1672408865735
+    created: 1672062836530
+    url: "{{ _.base }}/auth/login"
+    name: Login
+    description: ""
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"email": "mail@wantguns.dev",
+        	"password": "lmao",
+        	"long_living": true
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+        id: pair_a8a0df81145643e6a91b95f41499f350
+    authentication: {}
+    metaSortKey: -1672062836530
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_7501cbe97fe14f01b935eee470fe5f62
+    parentId: wrk_563cbfdcc2374267987b74a6fe11697a
+    modified: 1672406860537
+    created: 1672062264895
+    url: "{{ _.base }}/auth/register"
+    name: Register
+    description: ""
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"email": "gunwant2012@gmail.com",
+        	"password": "lomesh"
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+    authentication: {}
+    metaSortKey: -1672062264895
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: env_b1b33d850562ad9d450d98b49ca8c26512c282a5
+    parentId: wrk_563cbfdcc2374267987b74a6fe11697a
+    modified: 1672407652416
+    created: 1672062201643
+    name: Base Environment
+    data:
+      base: http://localhost:5001
+    dataPropertyOrder:
+      "&":
+        - base
+    color: null
+    isPrivate: false
+    metaSortKey: 1672062201643
+    _type: environment
+  - _id: jar_b1b33d850562ad9d450d98b49ca8c26512c282a5
+    parentId: wrk_563cbfdcc2374267987b74a6fe11697a
+    modified: 1672062201644
+    created: 1672062201644
+    name: Default Jar
+    cookies: []
+    _type: cookie_jar
+  - _id: spc_56faf039c2a5472b9c3cf62256a3db2e
+    parentId: wrk_563cbfdcc2374267987b74a6fe11697a
+    modified: 1672062201640
+    created: 1672062201640
+    fileName: Flowdrive auth new
+    contents: ""
+    contentType: yaml
+    _type: api_spec
