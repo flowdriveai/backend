@@ -49,19 +49,21 @@ class ConfirmEmailTokenController(MethodView):
     def get(self):
         token = request.args.get('token')
         message = ""
+
         try:
             email = confirm_token(token)
+            user = User.query.filter_by(email=email).first_or_404()
+            if user.confirmed:
+                message = 'Account already confirmed. Please login.'
+            else:
+                user.confirmed = True
+                user.confirmed_on = datetime.datetime.now()
+                db.session.add(user)
+                db.session.commit()
+                message = 'You have confirmed your account. Thanks!'
         except:
             message = 'The confirmation link is invalid or has expired.'
-        user = User.query.filter_by(email=email).first_or_404()
-        if user.confirmed:
-            message = 'Account already confirmed. Please login.'
-        else:
-            user.confirmed = True
-            user.confirmed_on = datetime.datetime.now()
-            db.session.add(user)
-            db.session.commit()
-            message = 'You have confirmed your account. Thanks!'
+
         return f"<p>{message}</p>", 200
 
 
@@ -108,7 +110,7 @@ class RegisterController(MethodView):
                 return Respond(
                     success=False,
                     message=e, 
-                    status=401
+                    status=500
                 )
         else:
             return Respond(
@@ -170,7 +172,7 @@ class LoginController(MethodView):
         except Exception as e:
             return Respond(
                 success=False,
-                message='Try again',
+                message=e,
                 status=500
             )
 
