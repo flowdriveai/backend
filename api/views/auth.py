@@ -46,7 +46,8 @@ class ConfirmEmailTokenController(MethodView):
             )
 
     # TODO: use client side views
-    def get(self, token):
+    def get(self):
+        token = request.args.get('token')
         message = ""
         try:
             email = confirm_token(token)
