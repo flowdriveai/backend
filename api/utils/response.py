@@ -13,4 +13,4 @@ class Respond(Response):
             print("data updated:")
             print(data)
             _data.update(data)
-        super().__init__(json.dumps(_data), status=status, headers=headers, mimetype=mimetype, content_type=content_type, direct_passthrough=direct_passthrough)
+        super().__init__(json.dumps(_data, default=str), status=status, headers=headers, mimetype=mimetype, content_type=content_type, direct_passthrough=direct_passthrough)

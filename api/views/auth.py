@@ -275,7 +275,6 @@ class ResetPasswordController(MethodView):
             new_password, app.config.get('BCRYPT_LOG_ROUNDS')
         ).decode() 
         db.session.commit()
-        print("reached here 3")
         return Respond(
             success=True,
             message="Successfully changed password"
