@@ -8,7 +8,7 @@ class BaseConfig:
     SECRET_KEY = os.getenv('SECRET_KEY')
     SECURITY_PASSWORD_SALT = os.getenv('SECURITY_PASSWORD_SALT')
     DEBUG = False
-    BCRYPT_LOG_ROUNDS = 13
+    BCRYPT_LOG_ROUNDS = 11
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     # mail settings
