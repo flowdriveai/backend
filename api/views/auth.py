@@ -196,7 +196,7 @@ class JWTRefreshController(MethodView):
 
     decorators = [jwt_required]
 
-    def get(self, user, jwt):
+    def post(self, user, jwt):
         params = request.get_json()
 
         long_living = params['long_living'] if 'long_living' in params else False

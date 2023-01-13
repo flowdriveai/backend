@@ -20,7 +20,7 @@ auth_bp.add_url_rule('/auth/login', view_func=login_view, methods=['POST'])
 auth_bp.add_url_rule('/auth/logout', view_func=logout_view, methods=['POST'])
 auth_bp.add_url_rule('/auth/confirm', view_func=confirm_view, methods=['POST', 'GET'])
 auth_bp.add_url_rule('/auth/sts', view_func=sts_view, methods=['GET'])
-auth_bp.add_url_rule('/auth/refresh_token', view_func=jwt_refresh_view, methods=['GET'])
+auth_bp.add_url_rule('/auth/refresh_token', view_func=jwt_refresh_view, methods=['POST'])
 auth_bp.add_url_rule('/auth/forgot_password', view_func=forgot_password_view, methods=['POST'])
 auth_bp.add_url_rule('/auth/reset_password', view_func=reset_password_view, methods=['POST'])
 
