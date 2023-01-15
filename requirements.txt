@@ -11,3 +11,4 @@ itsdangerous==2.1.2
 boto3==1.26.40
 dnspython==2.2.1
 gunicorn==20.1.0
+shortuuid==1.0.11

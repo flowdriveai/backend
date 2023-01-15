@@ -14,7 +14,7 @@ class UserController(MethodView):
         return Respond(
             success=True,
             message={
-                'user_id': user.id,
+                'user_id': user.uid,
                 'email': user.email,
                 'admin': user.admin,
                 'registered_on': user.registered_on,

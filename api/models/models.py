@@ -1,6 +1,8 @@
 import jwt
 import datetime
 
+import shortuuid
+
 from api import app, db, bcrypt
 
 
@@ -9,6 +11,7 @@ class User(db.Model):
     __tablename__ = "users"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    uid = db.Column(db.String(12), unique=True, nullable=False)
     email = db.Column(db.String(255), unique=True, nullable=False)
     password = db.Column(db.String(255), nullable=False)
     registered_on = db.Column(db.DateTime, nullable=False)
@@ -18,6 +21,7 @@ class User(db.Model):
     last_login_at = db.Column(db.DateTime, nullable=True)
 
     def __init__(self, email, password, admin=False, confirmed=False, confirmed_on=None, last_login_at=None):
+        self.uid = shortuuid.ShortUUID().random(length=12)
         self.email = email
         self.password = bcrypt.generate_password_hash(
             password, app.config.get('BCRYPT_LOG_ROUNDS')
