@@ -1,6 +1,6 @@
 from flask import Blueprint
 from api.views.auth import RegisterController, LoginController, LogoutController, ConfirmEmailTokenController, STSController, JWTRefreshController, ForgotPasswordController, ResetPasswordController
-from api.views.user import UserController
+from api.views.user import UserController, DriveController, DrivesListController
 
 ## Auth
 auth_bp = Blueprint('auth', __name__)
@@ -27,4 +27,8 @@ auth_bp.add_url_rule('/auth/reset_password', view_func=reset_password_view, meth
 ## User
 user_bp = Blueprint('user', __name__)
 user_view = UserController.as_view('user_controller')
+drives_list_view = DrivesListController.as_view('drives_list_controller')
+drive_view = DriveController.as_view('drive_controller')
 user_bp.add_url_rule('/user/status', view_func=user_view, methods=['GET'])
+user_bp.add_url_rule('/user/drives_list', view_func=drives_list_view, methods=['GET'])
+user_bp.add_url_rule('/user/drive', view_func=drive_view, methods=['GET'])
