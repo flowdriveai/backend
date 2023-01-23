@@ -2,7 +2,7 @@ import json
 
 import boto3
 
-def generate_policy(email):
+def generate_policy(uid):
     policy = {
         "Version": "2012-10-17",
         "Statement": [
@@ -22,7 +22,7 @@ def generate_policy(email):
                 ],
                 "Effect": "Allow",
                 "Resource": [
-                    f"arn:aws:s3:::fdusermedia/{email}/*"
+                    f"arn:aws:s3:::fdusermedia/{uid}/*"
                 ],
             },
         ]

@@ -186,7 +186,7 @@ class STSController(MethodView):
     def get(self, user, jwt):
         return Respond(
             success=True,
-            message=generate_sts(user.email)
+            message=generate_sts(user.uid)
         )
 
 class JWTRefreshController(MethodView):
