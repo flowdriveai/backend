@@ -31,13 +31,13 @@ def generate_policy(uid):
     return json.dumps(policy)
 
 
-def generate_sts(email):
+def generate_sts(uid):
     sts_client = boto3.client('sts')
 
     assumed_role=sts_client.assume_role(
         RoleArn="arn:aws:iam::758099803433:role/fdusermedia_role",
-        RoleSessionName=f"session_{email}",
-        Policy=generate_policy(email)
+        RoleSessionName=f"session_{uid}",
+        Policy=generate_policy(uid)
     )
 
     credentials=assumed_role['Credentials']
