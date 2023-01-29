@@ -7,27 +7,44 @@ def generate_policy(uid):
         "Version": "2012-10-17",
         "Statement": [
             {
-                "Sid": "AllowUserToSeeBucketListInTheConsole",
-                "Action": [
-                    "s3:ListAllMyBuckets", 
-                    "s3:GetBucketLocation"
-                ],
+                "Sid": "AllowRootListing",
+                "Action": ["s3:ListBucket"],
                 "Effect": "Allow",
-                "Resource": ["arn:aws:s3:::*"]
+                "Resource": ["arn:aws:s3:::fdusermedia"],
+                "Condition": {
+                    "StringEquals": {
+                        "s3:prefix": [f"processed/{uid}", f"unprocessed/{uid}"]
+                    }
+                },
             },
             {
-                "Sid": "AllowUserToPutIntoTheirBucket",
-                "Action": [
-                    "s3:PutObject"
-                ],
+                "Sid": "AllowUserToListObjects",
+                "Action": ["s3:ListBucket"],
+                "Effect": "Allow",
+                "Resource": ["arn:aws:s3:::fdusermedia"],
+                "Condition": {
+                    "StringLike": {
+                        "s3:prefix": [f"processed/{uid}/*", f"unprocessed/{uid}/*"]
+                    }
+                },
+            },
+            {
+                "Sid": "AllowUserToGetObjects",
+                "Action": ["s3:GetObject"],
                 "Effect": "Allow",
                 "Resource": [
-                    f"arn:aws:s3:::fdusermedia/{uid}/*"
+                    f"arn:aws:s3:::fdusermedia/unprocessed/{uid}/*",
+                    f"arn:aws:s3:::fdusermedia/processed/{uid}/*",
                 ],
             },
-        ]
+            {
+                "Sid": "AllowUserToPutObjects",
+                "Action": ["s3:PutObject"],
+                "Effect": "Allow",
+                "Resource": [f"arn:aws:s3:::fdusermedia/unprocessed/{uid}/*"],
+            },
+        ],
     }
-
     return json.dumps(policy)
 
 
