@@ -4,6 +4,7 @@ from functools import wraps
 
 from api.utils.response import Respond
 from api.models.models import User
+from api.utils.sts import generate_sts
 
 def jwt_required(view_func):
     @wraps(view_func)

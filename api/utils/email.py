@@ -23,7 +23,6 @@ def send_email(to, subject, template):
     return thr
 
 def valid_email(email):
-    # RFC-822 compliant email validation
     parsed_email = parseaddr(email)[1]
     if '@' not in parsed_email:
         return False
