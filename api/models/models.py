@@ -5,6 +5,26 @@ import shortuuid
 
 from api import app, db, bcrypt
 
+class Drive(db.Model):
+    """ Drives Model for storing drive related data"""
+    __tablename__ = "drives"
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    uid = db.Column(db.String(12), unique=True, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    started_on = db.Column(db.DateTime, nullable=False)
+    ended_on = db.Column(db.DateTime, nullable=False)
+    device_id = db.Column(db.String(255), nullable=False)
+    shared = db.Column(db.Boolean, nullable=False, default=False)
+
+    def __init__(self, user_id, started_on, ended_on, device_id, shared=False):
+        self.uid = shortuuid.ShortUUID().random(length=12)
+        self.user_id = user_id
+        self.started_on = started_on
+        self.ended_on = ended_on
+        self.device_id = device_id
+        self.shared = shared
+
 
 class User(db.Model):
     """ User Model for storing user related details """

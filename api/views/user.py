@@ -28,7 +28,7 @@ class UserController(MethodView):
                 'last_login_at': user.last_login_at
         })
 
-class DrivesListController(MethodView):
+class DrivesListControllerV99(MethodView):
     """
     User Drive Data Fetch Resource
     """
@@ -72,7 +72,7 @@ class DrivesListController(MethodView):
             success=True,
             message=resp)
 
-class DriveController(MethodView):
+class DriveControllerV99(MethodView):
     """
     User List of Drive Data Fetch Resource
     """
