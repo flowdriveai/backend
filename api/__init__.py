@@ -21,9 +21,10 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db) 
 mail = Mail(app)
 
-from api.views.urls import auth_bp, user_bp
+from api.views.urls import auth_bp, user_bp, drive_bp
 from api.cli import cli_bp
 
 app.register_blueprint(auth_bp)
 app.register_blueprint(user_bp)
+app.register_blueprint(drive_bp)
 app.register_blueprint(cli_bp)

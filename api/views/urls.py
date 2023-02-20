@@ -1,6 +1,7 @@
 from flask import Blueprint
 from api.views.auth import RegisterController, LoginController, LogoutController, ConfirmEmailTokenController, STSController, JWTRefreshController, ForgotPasswordController, ResetPasswordController
 from api.views.user import UserController, DriveControllerV99, DrivesListControllerV99
+from api.views.drives import DriveController, DriveListController, ShareDriveController
 
 ## Auth
 auth_bp = Blueprint('auth', __name__)
@@ -27,8 +28,18 @@ auth_bp.add_url_rule('/auth/reset_password', view_func=reset_password_view, meth
 ## User
 user_bp = Blueprint('user', __name__)
 user_view = UserController.as_view('user_controller')
-drives_list_view_v99 = DrivesListControllerV99.as_view('drives_list_controller')
-drive_view_v99 = DriveControllerV99.as_view('drive_controller')
+drives_list_view_v99 = DrivesListControllerV99.as_view('drives_list_controller_v99')
+drive_view_v99 = DriveControllerV99.as_view('drive_controller_v99')
 user_bp.add_url_rule('/user/status', view_func=user_view, methods=['GET'])
 user_bp.add_url_rule('/user/drives_listV99', view_func=drives_list_view_v99, methods=['GET'])
 user_bp.add_url_rule('/user/driveV99', view_func=drive_view_v99, methods=['POST'])
+
+
+## Drives
+drive_bp = Blueprint('drive', __name__)
+drive_view = DriveController.as_view('drive_controller')
+drive_list_view = DriveListController.as_view('drive_list_controller')
+share_drive_view = ShareDriveController.as_view('share_drive_controller')
+drive_bp.add_url_rule('/drive', view_func=drive_view, method=['GET', 'POST'])
+drive_bp.add_url_rule('/drive/list', view_func=drive_view, method=['GET'])
+drive_bp.add_url_rule('/drive/share', view_func=drive_view, method=['POST'])
