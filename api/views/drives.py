@@ -127,12 +127,12 @@ class DriveListController(MethodView):
 
         resp = []
         for drive in drive_list_filtered:
-            resp.append([{
+            resp.append({
                 'drive_id': drive.uid,
                 'started_on': drive.started_on,
                 'ended_on': drive.ended_on,
                 'shared': drive.shared
-            }])
+            })
 
         return Respond(success=True, message=resp)
 
