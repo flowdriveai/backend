@@ -55,16 +55,21 @@ class DrivesListControllerV99(MethodView):
                 if key[-1] != '/':
                     resp_prefix = '/'.join(key.split('/')[:3])
                     time_str_raw = '--'.join(key.split('/')[2].split('--')[:2])
-                    datetime_object = datetime.strptime(time_str_raw, '%Y-%m-%d--%H-%M-%S')
-                    unixtime = str(time.mktime(datetime_object.timetuple()))
-                    print(unixtime)
-                    if time_str_raw not in resp_map:
-                        resp_map[time_str_raw] = {
-                            "timestamp": unixtime,
-                            "fcam": f"{resp_prefix}/fcam.mp4",
-                            "ecam": f"{resp_prefix}/ecam.mp4",
-                            "qlog": f"{resp_prefix}/qlog",
-                        }
+
+                    try:
+                        datetime_object = datetime.strptime(time_str_raw, '%Y-%m-%d--%H-%M-%S')
+                        unixtime = str(time.mktime(datetime_object.timetuple()))
+                        print(unixtime)
+                        if time_str_raw not in resp_map:
+                            resp_map[time_str_raw] = {
+                                "timestamp": unixtime,
+                                "fcam": f"{resp_prefix}/fcam.mp4",
+                                "ecam": f"{resp_prefix}/ecam.mp4",
+                                "qlog": f"{resp_prefix}/qlog",
+                            }
+                    except Exception as e:
+                        print(e)
+                        
 
         resp=list(resp_map.values())
 

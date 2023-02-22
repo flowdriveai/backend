@@ -25,25 +25,30 @@ class DriveController(MethodView):
         if drive is None:
             # Drive not found
             return Respond(success=False, message="Drive not found", status=404)
-        elif drive.user_id != user.id or not drive.shared:
+        elif drive.user_id != user.id and not drive.shared:
             # Drive found but it is not of the same user and it is not shared
             return Respond(success=False, message="Unauthorized", status=401)
         else:
+            _user = User.query.filter_by(id=drive.user_id).first()
+            if _user is None:
+                # Something is fucked up
+                return Respond(success=False, message="Could not map the given user id")
+
             # Drive is either shared, or requested by the correct user
             keys = [
-                f"processed/{user.uid}/{drive.uid}/qlog"
-                f"processed/{user.uid}/{drive.uid}/fcam.mp4"
-                f"processed/{user.uid}/{drive.uid}/ecam.mp4"
+                f"processed/{_user.uid}/{drive.uid}/qlog",
+                f"processed/{_user.uid}/{drive.uid}/fcam.mp4",
+                f"processed/{_user.uid}/{drive.uid}/ecam.mp4"
             ]
 
             bucket = "fdusermedia"
 
-            sts_creds = generate_sts(user.uid)
+            sts_creds = generate_sts(_user.uid)
             s3_client=boto3.client(
-            's3',
-            aws_access_key_id=sts_creds["access_key"],
-            aws_secret_access_key=sts_creds["secret_access_key"],
-            aws_session_token=sts_creds["session_token"],
+                's3',
+                aws_access_key_id=sts_creds["access_key"],
+                aws_secret_access_key=sts_creds["secret_access_key"],
+                aws_session_token=sts_creds["session_token"],
             )
 
             s3_urls = {}
@@ -117,13 +122,13 @@ class DriveListController(MethodView):
     decorators = [jwt_required]
 
     def get(self, user, jwt):
-        drive_list_filtered = Drive.query.filter_by(user_id=user.id).all()
-        drive_list_reduced = drive_list_filtered.with_entities(Drive.uid, Drive.started_on, Drive.ended_on, Drive.shared)
+        drive_list_filtered = Drive.query.filter_by(user_id=user.id).with_entities(Drive.uid, Drive.started_on, Drive.ended_on, Drive.shared).all()
+        print(drive_list_filtered)
 
         resp = []
-        for drive in drive_list_reduced:
+        for drive in drive_list_filtered:
             resp.append([{
-                'drive_id': drive.id,
+                'drive_id': drive.uid,
                 'started_on': drive.started_on,
                 'ended_on': drive.ended_on,
                 'shared': drive.shared
