@@ -17,8 +17,7 @@ class DriveController(MethodView):
     decorators = [jwt_required]
 
     def get(self, user, jwt):
-        params = request.get_json()
-        drive_uid = params.get('drive_id')
+        drive_uid = request.args.get('drive_id')
 
         drive = Drive.query.filter_by(uid=drive_uid).first()
 
@@ -29,17 +28,18 @@ class DriveController(MethodView):
             # Drive found but it is not of the same user and it is not shared
             return Respond(success=False, message="Unauthorized", status=401)
         else:
+            # Drive is either shared, or requested by the correct user
+
             _user = User.query.filter_by(id=drive.user_id).first()
             if _user is None:
                 # Something is fucked up
                 return Respond(success=False, message="Could not map the given user id")
 
-            # Drive is either shared, or requested by the correct user
-            keys = [
-                f"processed/{_user.uid}/{drive.uid}/qlog",
-                f"processed/{_user.uid}/{drive.uid}/fcam.mp4",
-                f"processed/{_user.uid}/{drive.uid}/ecam.mp4"
-            ]
+            keys = {
+                "qlog": f"processed/{_user.uid}/{drive.uid}/qlog",
+                "fcam": f"processed/{_user.uid}/{drive.uid}/fcam.mp4",
+                "ecam": f"processed/{_user.uid}/{drive.uid}/ecam.mp4"
+            }
 
             bucket = "fdusermedia"
 
@@ -52,7 +52,7 @@ class DriveController(MethodView):
             )
 
             s3_urls = {}
-            for key in keys:
+            for asset, key in keys.items():
                 try:
                     s3_client.head_object(Bucket=bucket, Key=key)
                 except ClientError as e:
@@ -65,7 +65,7 @@ class DriveController(MethodView):
                 presigned_url = s3_client.generate_presigned_url(
                     "get_object", Params={"Bucket": bucket, "Key": key}
                 )
-                s3_urls[key] = presigned_url
+                s3_urls[asset] = presigned_url
 
             return Respond(
                 success=True,
@@ -75,6 +75,7 @@ class DriveController(MethodView):
                     'ended_on': drive.ended_on,
                     'device_id': drive.device_id,
                     'shared': drive.shared,
+                    'owned': drive.user_id == user.id,
                     'url_matrix': s3_urls
             })
 
