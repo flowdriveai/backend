@@ -67,12 +67,20 @@ class DriveController(MethodView):
                 )
                 s3_urls[asset] = presigned_url
 
+            # Calculate drive duration
+            duration_secs = (drive.ended_on - drive.started_on).total_seconds()
+            if duration_secs > 3600:
+                duration_str = f"{round(duration_secs // 3600)} hours and {round(duration_secs // 60)} minutes"
+            else:
+                duration_str = f"{round(duration_secs // 60)} minutes and {round(duration_secs % 60)} seconds"
+
             return Respond(
                 success=True,
                 message={
                     'drive_id': drive.uid,
                     'started_on': drive.started_on,
                     'ended_on': drive.ended_on,
+                    'duration': duration_str,
                     'device_id': drive.device_id,
                     'shared': drive.shared,
                     'owned': drive.user_id == user.id,
