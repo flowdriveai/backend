@@ -132,7 +132,6 @@ class DriveListController(MethodView):
 
     def get(self, user, jwt):
         drive_list_filtered = Drive.query.filter_by(user_id=user.id).with_entities(Drive.uid, Drive.started_on, Drive.ended_on, Drive.shared).all()
-        print(drive_list_filtered)
 
         resp = []
         for drive in drive_list_filtered:
