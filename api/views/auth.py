@@ -159,6 +159,7 @@ class LoginController(MethodView):
                     return Respond(
                         success=True,
                         message={
+                            'user_id': user.uid,
                             'auth_token': auth_token,
                         }, 
                     )
