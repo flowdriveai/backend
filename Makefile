@@ -4,26 +4,26 @@ install:
 
 .PHONY: create-db
 create-db: install
-	source ./.env && \
+	. ./.env && \
 		flask cli create-db
 
 .PHONY: init-db
 init-db: install
 	rm -rf migrations
-	source ./.env && \
+	. ./.env && \
 		flask db init
 
 .PHONY: migrate
 migrate: install
-	source ./.env && \
+	. ./.env && \
 		flask db migrate && flask db upgrade
 
 .PHONY: drop-db
 drop-db: install
-	source ./.env && \
+	. ./.env && \
 		flask cli drop-db
 
 .PHONY: run
 run: install
-	source ./.env && \
+	. ./.env && \
 		flask run
