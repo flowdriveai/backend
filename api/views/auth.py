@@ -239,9 +239,8 @@ class ForgotPasswordController(MethodView):
         
         # Forge a request link, and send it to their email
         email_token = generate_confirmation_token(user.email)
-        # TODO: change to a frontend URL here
-        confirm_url = ""
-        email_message = render_template('forgot_password.html', confirm_url=email_token)
+        confirm_url = f"https://flicks.flowdrive.ai/auth/reset-password?token={email_token}"
+        email_message = render_template('forgot_password.html', confirm_url=confirm_url)
         email_subject = "Reset your Flowdrive password"
         send_email(user.email, email_subject, email_message)
 
