@@ -2,6 +2,7 @@ from flask import Blueprint
 from api.views.auth import RegisterController, LoginController, LogoutController, ConfirmEmailTokenController, STSController, JWTRefreshController, ForgotPasswordController, ResetPasswordController
 from api.views.user import UserController, DriveControllerV99, DrivesListControllerV99
 from api.views.drives import DriveController, DriveListController, ShareDriveController
+from api.views.health import HealthController
 
 ## Auth
 auth_bp = Blueprint('auth', __name__)
@@ -43,3 +44,8 @@ share_drive_view = ShareDriveController.as_view('share_drive_controller')
 drive_bp.add_url_rule('/drive', view_func=drive_view, methods=['GET', 'POST'])
 drive_bp.add_url_rule('/drive/list', view_func=drive_list_view, methods=['GET'])
 drive_bp.add_url_rule('/drive/share', view_func=share_drive_view, methods=['POST'])
+
+## Health
+health_bp = Blueprint('health', __name__)
+health_view = HealthController.as_view('health_controller')
+health_bp.add_url_rule('/health', view_func=health_view, methods=['GET'])
