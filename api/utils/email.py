@@ -24,7 +24,7 @@ def send_email(to, subject, template):
 
 def valid_email(email):
     parsed_email = parseaddr(email)[1]
-    if '@' not in parsed_email:
+    if '@' not in parsed_email[1:]:
         return False
 
     # Check for the domain's MX records
