@@ -4,7 +4,7 @@ import boto3
 from botocore.errorfactory import ClientError
 
 from api import db
-from api.models.models import Drive, User
+from api.models.models import Device, Drive, User
 from api.utils.decorators import jwt_required
 from api.utils.response import Respond
 from api.utils.sts import generate_sts
@@ -20,6 +20,7 @@ class DriveController(MethodView):
         drive_uid = request.args.get('drive_id')
 
         drive = Drive.query.filter_by(uid=drive_uid).first()
+        device = Device.query.filter_by(id=drive.device_id).first()
 
         if drive is None:
             # Drive not found
@@ -81,7 +82,7 @@ class DriveController(MethodView):
                     'started_on': drive.started_on,
                     'ended_on': drive.ended_on,
                     'duration': duration_str,
-                    'device_id': drive.device_id,
+                    'device_id': device.model_name,
                     'shared': drive.shared,
                     'owned': drive.user_id == user.id,
                     'url_matrix': s3_urls

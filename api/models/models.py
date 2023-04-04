@@ -14,7 +14,7 @@ class Drive(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     started_on = db.Column(db.DateTime, nullable=False)
     ended_on = db.Column(db.DateTime, nullable=False)
-    device_id = db.Column(db.String(255), nullable=False)
+    device_id = db.Column(db.Integer, db.ForeignKey('devices.id'))
     shared = db.Column(db.Boolean, nullable=False, default=False)
 
     def __init__(self, user_id, started_on, ended_on, device_id, shared=False):
@@ -25,6 +25,21 @@ class Drive(db.Model):
         self.device_id = device_id
         self.shared = shared
 
+class Device(db.Model):
+    """User devices"""
+    __tablename__ = "devices"
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    uid = db.Column(db.String(12), unique=True, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    dongle_id = db.Column(db.String(255), unique=True, nullable=False)
+    model_name = db.Column(db.String(255), nullable=False)
+
+    def __init__(self, user_id, dongle_id, model_name):
+        self.uid = shortuuid.ShortUUID().random(length=12)
+        self.user_id = user_id
+        self.dongle_id = dongle_id
+        self.model_name = model_name
 
 class User(db.Model):
     """ User Model for storing user related details """
