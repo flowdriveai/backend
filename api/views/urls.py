@@ -1,6 +1,6 @@
 from flask import Blueprint
 from api.views.auth import RegisterController, LoginController, LogoutController, ConfirmEmailTokenController, STSController, JWTRefreshController, ForgotPasswordController, ResetPasswordController
-from api.views.user import UserController, DriveControllerV99, DrivesListControllerV99
+from api.views.user import UserController, DriveControllerV99, DrivesListControllerV99, SubscribeController
 from api.views.drives import DriveController, DriveListController, ShareDriveController
 from api.views.devices import DeviceController
 from api.views.health import HealthController
@@ -30,11 +30,13 @@ auth_bp.add_url_rule('/auth/reset_password', view_func=reset_password_view, meth
 ## User
 user_bp = Blueprint('user', __name__)
 user_view = UserController.as_view('user_controller')
+subscribe_view = SubscribeController.as_view('subscribe_controller')
 drives_list_view_v99 = DrivesListControllerV99.as_view('drives_list_controller_v99')
 drive_view_v99 = DriveControllerV99.as_view('drive_controller_v99')
 user_bp.add_url_rule('/user/status', view_func=user_view, methods=['GET'])
 user_bp.add_url_rule('/user/drives_listV99', view_func=drives_list_view_v99, methods=['GET'])
 user_bp.add_url_rule('/user/driveV99', view_func=drive_view_v99, methods=['POST'])
+user_bp.add_url_rule('/user/subscribe', view_func=subscribe_view, methods=['POST', 'DELETE'])
 
 
 ## Drives

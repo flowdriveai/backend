@@ -5,6 +5,60 @@ import shortuuid
 
 from api import app, db, bcrypt
 
+class Plans(db.Model):
+    """Flowpilot Plans"""
+    __tablename__ = "plans"
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    uid = db.Column(db.String(12), unique=True, nullable=False)
+    name = db.Column(db.String(255), unique=True, nullable=False)
+    ttl = db.Column(db.Integer, nullable=False)
+    credits = db.Column(db.Integer, nullable=False)
+    key_required = db.Column(db.Boolean, nullable=False, default=False)
+
+    def __init__(self, name, ttl, credits, key_required=False):
+        self.uid = shortuuid.ShortUUID().random(length=12)
+        self.name = name
+        self.ttl = ttl
+        self.credits = credits
+        self.key_required = key_required
+
+
+class PlanKeys(db.Model):
+    """Plan Keys"""
+    __tablename__ = "plan_keys"
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    key = db.Column(db.String(20), unique=True, nullable=False)
+    plan_id = db.Column(db.Integer, db.ForeignKey('plans.id'))
+    expired = db.Column(db.Boolean, nullable=False, default=False)
+
+    def __init__(self, plan_id):
+        self.key = shortuuid.ShortUUID().random(length=20)
+        self.plan_id = plan_id
+
+
+class Subscriptions(db.Model):
+    """Flowpilot Subscriptions"""
+    __tablename__ = "subscriptions"
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    uid = db.Column(db.String(12), unique=True, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=True)
+    plan_id = db.Column(db.Integer, db.ForeignKey('plans.id'))
+    plan_key_id = db.Column(db.Integer, db.ForeignKey('plan_keys.id'), nullable=True)
+    start_date = db.Column(db.DateTime, nullable=False)
+    end_date = db.Column(db.DateTime, nullable=False)
+
+    def __init__(self, plan_id, plan_ttl, user_id=None, plan_key_id=None):
+        self.uid = shortuuid.ShortUUID().random(length=12)
+        self.user_id = user_id
+        self.plan_id = plan_id
+        self.plan_key_id = plan_key_id
+        self.start_date = datetime.datetime.now()
+        self.end_date = datetime.datetime.now() + datetime.timedelta(0, plan_ttl)
+
+
 class Drive(db.Model):
     """ Drives Model for storing drive related data"""
     __tablename__ = "drives"
@@ -25,6 +79,7 @@ class Drive(db.Model):
         self.device_id = device_id
         self.shared = shared
 
+
 class Device(db.Model):
     """User devices"""
     __tablename__ = "devices"
@@ -41,6 +96,7 @@ class Device(db.Model):
         self.dongle_id = dongle_id
         self.model_name = model_name
 
+
 class User(db.Model):
     """ User Model for storing user related details """
     __tablename__ = "users"
@@ -54,6 +110,7 @@ class User(db.Model):
     confirmed = db.Column(db.Boolean, nullable=False, default=False)
     confirmed_on = db.Column(db.DateTime, nullable=True)
     last_login_at = db.Column(db.DateTime, nullable=True)
+    subscription_id = db.Column(db.Integer, db.ForeignKey('subscriptions.id'))
 
     def __init__(self, email, password, admin=False, confirmed=False, confirmed_on=None, last_login_at=None):
         self.uid = shortuuid.ShortUUID().random(length=12)
@@ -66,6 +123,14 @@ class User(db.Model):
         self.confirmed = confirmed
         self.confirmed_on = confirmed_on
         self.last_login_at = last_login_at
+
+        # Add default subscription
+        community_plan = Plans.query.filter_by(name='community').first()
+        subscription = Subscriptions(community_plan.id, community_plan.ttl)
+        db.session.add(subscription)
+        db.session.commit()
+
+        self.subscription_id = subscription.id
 
     def encode_auth_token(self, user_id, long_living=False):
         """

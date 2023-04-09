@@ -2,8 +2,9 @@ import os
 import unittest
 import coverage
 
-# from flask_migrate import Migrate, MigrateCommand
 from flask import Blueprint
+
+from api.models.models import Plans, PlanKeys
 
 cli_bp = Blueprint('cli', __name__)
 
@@ -48,6 +49,28 @@ def cov():
         return 0
     return 1
 
+@cli_bp.cli.command("populate-plans")
+def populate_plans():
+    """Populates the current flowdrive plans"""
+    db.session.execute('''DELETE FROM plans''')
+    db.session.commit()
+
+    community = Plans('community', 365 * 24 * 60 * 60 * 100, 0)
+    f3_beta = Plans('f3_beta', 365 * 24 * 60 * 60, 0, True)
+    f3 = Plans('f3', 365 * 24 * 60 * 60, 50)
+
+    db.session.add_all([community, f3_beta, f3])
+    db.session.commit()
+
+@cli_bp.cli.command("generate-f3-beta-keys")
+def populate_plans():
+    """Generates 10 f3 beta keys"""
+    community_plan = Plans.query.filter_by(name='community').first()
+
+    keys = [PlanKeys(community_plan.id) for _ in range(10)]
+
+    db.session.add_all(keys)
+    db.session.commit()
 
 @cli_bp.cli.command("create-db")
 def create_db():

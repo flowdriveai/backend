@@ -4,7 +4,7 @@ from flask import render_template, request, url_for
 from flask.views import MethodView
 
 from api import bcrypt, db, app
-from api.models.models import User, BlacklistJWT
+from api.models.models import User, BlacklistJWT, Subscriptions
 from api.utils.decorators import jwt_required
 from api.utils.email import send_email, valid_email
 from api.utils.email_token import confirm_token, generate_confirmation_token
@@ -99,6 +99,12 @@ class RegisterController(MethodView):
 
                 # insert the user
                 db.session.add(user)
+                db.session.commit()
+
+                # Associate Subscription to user
+                subscription = Subscriptions.query.filter_by(id=user.subscription_id).first()
+                subscription.user_id = user.id
+                db.session.add(subscription)
                 db.session.commit()
 
                 return Respond(

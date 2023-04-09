@@ -16,7 +16,7 @@ init-db: install
 .PHONY: migrate
 migrate: install
 	. ./.env && \
-		flask db migrate && flask db upgrade
+		flask db stamp head && flask db migrate && flask db upgrade
 
 .PHONY: drop-db
 drop-db: install
