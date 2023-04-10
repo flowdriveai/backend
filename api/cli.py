@@ -65,9 +65,9 @@ def populate_plans():
 @cli_bp.cli.command("generate-f3-beta-keys")
 def populate_plans():
     """Generates 10 f3 beta keys"""
-    community_plan = Plans.query.filter_by(name='community').first()
+    f3_beta_plan = Plans.query.filter_by(name='f3_beta').first()
 
-    keys = [PlanKeys(community_plan.id) for _ in range(10)]
+    keys = [PlanKeys(f3_beta_plan.id) for _ in range(10)]
 
     db.session.add_all(keys)
     db.session.commit()

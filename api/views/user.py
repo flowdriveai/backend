@@ -101,7 +101,7 @@ class SubscribeController(MethodView):
             plan_key = PlanKeys.query.filter_by(key=key).first()
 
             # Key valid ?
-            if plan_key is None or plan_key.expired == True:
+            if plan_key is None or plan_key.expired == True or plan_key.plan_id != new_plan.id:
                 return Respond(
                     success=False,
                     message="Key invalid or expired"
