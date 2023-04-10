@@ -55,9 +55,9 @@ def populate_plans():
     db.session.execute('''DELETE FROM plans''')
     db.session.commit()
 
-    community = Plans('community', 365 * 24 * 60 * 60 * 100, 0)
-    f3_beta = Plans('f3_beta', 365 * 24 * 60 * 60, 0, True)
-    f3 = Plans('f3', 365 * 24 * 60 * 60, 50)
+    community = Plans('community', 365 * 24 * 60 * 60 * 100, 0, max_devices=25)
+    f3_beta = Plans('f3_beta', 365 * 24 * 60 * 60, 0, True, max_devices=1)
+    f3 = Plans('f3', 365 * 24 * 60 * 60, 50, max_devices=1)
 
     db.session.add_all([community, f3_beta, f3])
     db.session.commit()

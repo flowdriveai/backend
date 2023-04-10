@@ -15,13 +15,15 @@ class Plans(db.Model):
     ttl = db.Column(db.Integer, nullable=False)
     credits = db.Column(db.Integer, nullable=False)
     key_required = db.Column(db.Boolean, nullable=False, default=False)
+    max_devices = db.Column(db.Integer, nullable=False, default=1, server_default='1')
 
-    def __init__(self, name, ttl, credits, key_required=False):
+    def __init__(self, name, ttl, credits, key_required=False, max_devices=1):
         self.uid = shortuuid.ShortUUID().random(length=12)
         self.name = name
         self.ttl = ttl
         self.credits = credits
         self.key_required = key_required
+        self.max_devices = max_devices
 
 
 class PlanKeys(db.Model):

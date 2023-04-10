@@ -2,7 +2,7 @@ from flask.views import MethodView
 from flask import request
 
 from api import db
-from api.models.models import Device, User
+from api.models.models import Device, User, Subscriptions, Plans
 from api.utils.decorators import jwt_required
 from api.utils.response import Respond
 
@@ -18,6 +18,16 @@ class DeviceController(MethodView):
 
         dongle_id = params.get('dongle_id')
         model_name = params.get('model_name')
+
+        # Check whether the user has filled their plan's device limit
+        subscription = Subscriptions.query.filter_by(id=user.subscription_id).first()
+        plan = Plans.query.filter_by(id=subscription.plan_id).first()
+        curr_devices = db.session.query(Device.id).filter_by(user_id=user.id).count()
+        if curr_devices >= plan.max_devices:
+            return Respond(
+                success=False,
+                message=f"Max device limit reached as per your current plan {plan.name}"
+            )
         
         if db.session.query(Device.id).filter_by(dongle_id=dongle_id).first() is not None:
             return Respond(

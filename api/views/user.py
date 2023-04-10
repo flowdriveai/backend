@@ -10,7 +10,7 @@ from api import db
 from api.utils.decorators import jwt_required
 from api.utils.response import Respond
 from api.utils.sts import generate_sts
-from api.models.models import Subscriptions, Plans, PlanKeys
+from api.models.models import Subscriptions, Plans, PlanKeys, Device
 
 class UserController(MethodView):
     """
@@ -52,6 +52,8 @@ class SubscribeController(MethodView):
         user.subscription_id = subscription.id
         db.session.add(user)
         db.session.commit()
+
+        self.delete_old_devices(user.id)
 
         return Respond(
             success=True,
@@ -120,6 +122,8 @@ class SubscribeController(MethodView):
             db.session.add(user)
             db.session.commit()
 
+            self.delete_old_devices(user.id)
+
             return Respond(
                 success=True,
                 message=f"Changed plan to {new_plan.name}"
@@ -149,10 +153,18 @@ class SubscribeController(MethodView):
         db.session.add(user)
         db.session.commit()
 
+        self.delete_old_devices(user.id)
+
         return Respond(
             success=True,
             message=f"Changed plan to {new_plan.name}"
         )
+
+    @staticmethod
+    def delete_old_devices(user_id):
+        delete_q = Device.__table__.delete().where(Device.user_id == user_id)
+        db.session.execute(delete_q)
+        db.session.commit()
 
 
 class DrivesListControllerV99(MethodView):
