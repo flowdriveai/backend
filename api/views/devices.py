@@ -19,6 +19,18 @@ class DeviceController(MethodView):
         dongle_id = params.get('dongle_id')
         model_name = params.get('model_name')
 
+        if dongle_id is None or len(dongle_id.strip()) == 0:
+            return Respond(
+                success=False,
+                message="Cannot have a device with an empty Dongle ID"
+            )
+
+        if model_name is None or len(model_name.strip()) == 0:
+            return Respond(
+                success=False,
+                message="Cannot have a device with an empty Model Name"
+            )
+
         # Check whether the user has filled their plan's device limit
         subscription = Subscriptions.query.filter_by(id=user.subscription_id).first()
         plan = Plans.query.filter_by(id=subscription.plan_id).first()
