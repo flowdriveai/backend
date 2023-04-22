@@ -73,19 +73,29 @@ class RegisterController(MethodView):
     """
     def post(self):
         params = request.get_json()
+        provided_email = params.get('email')
+        sanitized_email = provided_email.strip().lower()
+        provided_password = params.get('password')
 
         # check if user already exists
-        user = User.query.filter_by(email=params.get('email')).first()
+        user = User.query.filter_by(email=sanitized_email).first()
         if not user:
             try:
-                if not valid_email(params.get('email')):
+                if not valid_email(sanitized_email):
                     return Respond(
                         success=False,
                         message="Invalid Email"
                     )
+
+                if len(provided_password) < 8:
+                    return Respond(
+                        success=False,
+                        message='The length of the password must exceed 8 characters.',
+                        status=400
+                    )
                     
                 user = User(
-                    email=params.get('email'),
+                    email=sanitized_email,
                     password=params.get('password'),
                     confirmed=False
                 )
