@@ -142,10 +142,12 @@ class LoginController(MethodView):
     """
     def post(self):
         params = request.get_json()
+        provided_email = params.get('email')
+        sanitized_email = provided_email.strip().lower()
         try:
             # fetch the user data
             user = User.query.filter_by(
-                email=params.get('email')
+                email=sanitized_email
             ).first()
 
             long_living = params['long_living'] if 'long_living' in params else False
@@ -238,7 +240,8 @@ class ForgotPasswordController(MethodView):
     # TODO: Use client side views
     def post(self):
         params = request.get_json()
-        email = params.get('email')
+        provided_email = params.get('email')
+        email = provided_email.strip().lower()
 
         user = User.query.filter_by(email=email).first()
 
