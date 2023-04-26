@@ -80,6 +80,7 @@ class DeviceController(MethodView):
             resp.append({
                 'device_id': device.uid,
                 'model_name': device.model_name,
+                'dongle_id': device.dongle_id
             })
 
         return Respond(success=True, message=resp)
