@@ -38,7 +38,7 @@ class ConfirmEmailTokenController(MethodView):
             confirm_url = url_for('.confirm_controller', token=email_token, _external=True)
             email_message = render_template('confirm_email.html', confirm_url=confirm_url)
             email_subject = "Flowdrive Onboarding"
-            send_email(user.email, email_subject, email_message)
+            send_email(user.email, email_subject, template=email_message)
 
             return Respond(
                 success=True,
@@ -105,7 +105,7 @@ class RegisterController(MethodView):
                 confirm_url = url_for('.confirm_controller', token=email_token, _external=True)
                 email_message = render_template('confirm_email.html', confirm_url=confirm_url)
                 email_subject = "Flowdrive Onboarding"
-                send_email(user.email, email_subject, email_message)
+                send_email(user.email, email_subject, template=email_message)
 
                 # insert the user
                 db.session.add(user)
@@ -261,7 +261,7 @@ class ForgotPasswordController(MethodView):
         confirm_url = f"https://flicks.flowdrive.ai/auth/reset-password?token={email_token}"
         email_message = render_template('forgot_password.html', confirm_url=confirm_url)
         email_subject = "Reset your Flowdrive password"
-        send_email(user.email, email_subject, email_message)
+        send_email(user.email, email_subject, template=email_message)
 
         return Respond(
             success=True,

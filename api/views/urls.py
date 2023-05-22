@@ -4,7 +4,7 @@ from api.views.user import UserController, DriveControllerV99, DrivesListControl
 from api.views.drives import DriveController, DriveListController, ShareDriveController
 from api.views.devices import DeviceController
 from api.views.health import HealthController
-from api.views.plans import PlanController
+from api.views.plans import PlanController, SendInvitesController
 
 ## Auth
 auth_bp = Blueprint('auth', __name__)
@@ -62,4 +62,6 @@ health_bp.add_url_rule('/health', view_func=health_view, methods=['GET'])
 ## Plans
 plans_bp = Blueprint('plan', __name__)
 plans_view = PlanController.as_view('plans_controller')
+send_invites_view = SendInvitesController.as_view('send_invites_controller')
 plans_bp.add_url_rule('/plans', view_func=plans_view, methods=['GET'])
+plans_bp.add_url_rule('/plans/send_invites', view_func=send_invites_view, methods=['POST'])

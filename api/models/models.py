@@ -33,6 +33,7 @@ class PlanKeys(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     key = db.Column(db.String(20), unique=True, nullable=False)
     plan_id = db.Column(db.Integer, db.ForeignKey('plans.id'))
+    sent = db.Column(db.Boolean, server_default='0', default=False)
     expired = db.Column(db.Boolean, nullable=False, default=False)
 
     def __init__(self, plan_id):
