@@ -5,6 +5,7 @@ from api.views.drives import DriveController, DriveListController, ShareDriveCon
 from api.views.devices import DeviceController
 from api.views.health import HealthController
 from api.views.plans import PlanController, SendInvitesController
+from api.views.raw_segments import RawSegmentsController
 
 ## Auth
 auth_bp = Blueprint('auth', __name__)
@@ -65,3 +66,8 @@ plans_view = PlanController.as_view('plans_controller')
 send_invites_view = SendInvitesController.as_view('send_invites_controller')
 plans_bp.add_url_rule('/plans', view_func=plans_view, methods=['GET'])
 plans_bp.add_url_rule('/plans/send_invites', view_func=send_invites_view, methods=['POST'])
+
+## Raw Segments
+raw_segments_bp = Blueprint('raw_segments', __name__)
+raw_segments_view = RawSegmentsController.as_view('raw_segments_controller')
+raw_segments_bp.add_url_rule('/raw_segments', view_func=raw_segments_view, methods=['GET'])

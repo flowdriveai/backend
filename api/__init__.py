@@ -31,7 +31,7 @@ db = SQLAlchemy(app, metadata=metadata)
 migrate = Migrate(app, db, render_as_batch=True)
 mail = Mail(app)
 
-from api.views.urls import auth_bp, user_bp, drive_bp, health_bp, device_bp, plans_bp
+from api.views.urls import auth_bp, user_bp, drive_bp, health_bp, device_bp, plans_bp, raw_segments_bp
 from api.cli import cli_bp
 
 app.register_blueprint(auth_bp)
@@ -41,3 +41,4 @@ app.register_blueprint(device_bp)
 app.register_blueprint(health_bp)
 app.register_blueprint(plans_bp)
 app.register_blueprint(cli_bp)
+app.register_blueprint(raw_segments_bp)
